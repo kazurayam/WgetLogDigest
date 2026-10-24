@@ -26,6 +26,12 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation libs.guava
+
+    // SLF4J を使う
+    implementation 'org.slf4j:slf4j-api:2.0.20'
+    // Logback を使う
+    implementation 'ch.qos.logback:logback-core:1.6.5'
+    implementation 'ch.qos.logback:logback-classic:1.6.5'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

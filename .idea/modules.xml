@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/WgetLogParser.iml" filepath="$PROJECT_DIR$/.idea/WgetLogParser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.test.iml" />
     </modules>
   </component>
 </project>
