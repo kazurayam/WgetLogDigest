@@ -6,6 +6,7 @@ package com.kazurayam.wgetlog;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.file.Files;
@@ -76,19 +77,45 @@ Saving to: 'www.example.com/css/common/layout.css'
     }
 
     @Test
-    void test_a_lot_of_entries() throws IOException {
+    void test_transform_a_wgetlog_into_a_line_oriented_text() throws IOException {
         Path logFile = Paths.get("src/test/fixtures/wget.log");
         Reader rdr = Files.newBufferedReader(logFile);
         Digester digester = new Digester(rdr);
+        Path out = Paths.get("build/all_entries.txt");
+        PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
+        while (digester.hasNext()) {
+            WgetLogEntry entry = digester.next();
+            pw.println(entry.toString());
+        }
+        pw.flush();
+        pw.close();
+        logger.info("find the output at " + out);
+    }
+
+    @Test
+    void test_find_faulty_URLs_out_of_a_lot_of_entries() throws IOException {
+        Path logFile = Paths.get("src/test/fixtures/wget.log");
+        Reader rdr = Files.newBufferedReader(logFile);
+        Digester digester = new Digester(rdr);
+        Path out = Paths.get("build/faulty_URLs.txt");
+        PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
         while (digester.hasNext()) {
             WgetLogEntry entry = digester.next();
             if (entry.getResponseStatus() > 400) {
-                logger.info("{} {} {}",
-                        entry.getURL(),
-                        entry.getResponseStatus(),
-                        entry.getStatusMessage()
-                );
+                //logger.info(entry.toString());
+                pw.println(entry.toString());
             }
         }
+        pw.flush();
+        pw.close();
+        logger.info("find the output at " + out);
+    }
+
+    @Test
+    void test_main() throws IOException {
+        String[] args = {"src/test/fixtures/wget.log", "build/main_output.txt"};
+        Digester.main(args);
+        Path out = Paths.get("build/main_output.txt");
+        assertTrue(Files.size(out) > 1000, out + " is not large enough. There must be something wrong.");
     }
 }

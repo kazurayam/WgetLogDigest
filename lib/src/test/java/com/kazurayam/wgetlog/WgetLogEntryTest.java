@@ -102,4 +102,14 @@ Saving to: 'example.com/index.html'
         WgetLogEntry entry = new WgetLogEntry(content);
         assertEquals(200, entry.getResponseStatus());
     }
+
+    @Test
+    void test_toString() {
+        WgetLogEntry entry = new WgetLogEntry(content);
+        String expected = "2026-10-23 22:03:04" + "\t" +
+                "http://example.com/index.html" + "\t" +
+                "200" + "\t" +
+                "OK";
+        assertEquals(expected, entry.toString());
+    }
 }

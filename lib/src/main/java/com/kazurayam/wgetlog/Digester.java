@@ -3,7 +3,12 @@
  */
 package com.kazurayam.wgetlog;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,5 +54,28 @@ public class Digester implements Iterator<WgetLogEntry> {
         } else {
             return null;
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        if (args.length < 2) {
+            throw new IllegalArgumentException("com.kazurayam.wgetlog.Digester <wget-log-path> <output-path>");
+        }
+        Path input = Paths.get(args[0]);
+        if (!Files.exists(input)) {
+            throw new IllegalStateException(input + " does not exist");
+        }
+        Path output = Paths.get(args[1]);
+        if (!Files.exists(output.getParent())) {
+            Files.createDirectories(output.getParent());
+        }
+        PrintWriter pw = new PrintWriter(Files.newBufferedWriter(output));
+        Digester digester = new Digester(Files.newBufferedReader(input));
+        WgetLogEntry entry;
+        while (digester.hasNext()) {
+            entry = digester.next();
+            pw.println(entry.toString());
+        }
+        pw.flush();
+        pw.close();
     }
 }

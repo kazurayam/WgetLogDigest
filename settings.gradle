@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'WgetLogDigest'
-include('lib', 'plugin')
+include('lib')

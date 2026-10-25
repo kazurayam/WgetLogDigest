@@ -94,4 +94,15 @@ public class WgetLogEntry {
     public String getStatusMessage() {
         return statusMessage;
     }
+
+    public String toString() {
+        return this.getDateTime().format(dateTimeFormatter) +
+                "\t" +
+                this.getURL().toExternalForm() +
+                "\t" +
+                this.getResponseStatus() +
+                "\t" +
+                this.getStatusMessage();
+        // there should be no NEWLINE char at the tail
+    }
 }

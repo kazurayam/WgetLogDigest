@@ -38,4 +38,11 @@ public class RewindableLineReader {
         Objects.requireNonNull(line);
         lineStack.push(line);
     }
+    void close() {
+        try {
+            br.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
