@@ -62,5 +62,14 @@ You can easily find that the format of `wget`'s log is not *line-oriented*. Ther
 `WgetLogDigest` is a tiny tool in Java that transforms a wget's log file into another file in a line-oriented format. For example, the origina log entries showed above will be transformed as follows:
 
 ```text
-
+2026-10-23 22:03:04  http://www.myapp.jp/index.html  200  OK
+2026-10-23 22:03:34  http://www.myapp.jp/member/index.html  200  OK
+2026-10-23 22:03:35  http://www.myapp.jp/img/common/f_logo.png  200  OK
+2026-10-23 22:03:36  http://www.myapp.jp/privacy/index.html  404  Not Found
+2026-10-23 22:03:37  http://www.myapp.jp/img/index/page_top.png  200 OK
 ```
+
+Each lines in the output file will be TAB-delimited, like this
+
+yyyy-MM--dd hh:mm:ss **\t** URL **\t** status **\t** message
+
