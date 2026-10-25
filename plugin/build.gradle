@@ -11,31 +11,16 @@ plugins {
 }
 
 group = 'com.kazurayam'
-version = '0.1.0-SNAPSHOT'
-
-base {
-    archivesName = 'wget-log-digest-plugin'
-}
-
-ext {
-    isReleaseVersion = !version.endsWith("SNAPSHOT")
-}
+version = '0.1.0'
 
 repositories {
     // Use Maven Central for resolving dependencies.¶
     mavenCentral()
-    mavenLocal()
 }
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+// Add a source set for the functional test suite¶
+sourceSets {
+    functionalTest {
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecated"
 }
 
 dependencies {
@@ -48,18 +33,29 @@ dependencies {
     testImplementation libs.spock.core
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-// Add a source set for the functional test suite¶
-sourceSets {
-    functionalTest {
-        java {
-            srcDir 'src/functionalTest/java'
-            srcDir 'src/functionalTest/groovy'
-        }
-        resources {
-            srcDir 'src/functionalTest/resources'
-        }
-        compileClasspath + sourceSets.main.runtimeClasspath
-    }
+
+configurations.functionalTestImplementation.extendsFrom(configurations.testImplementation)
+configurations.functionalTestRuntimeOnly.extendsFrom(configurations.testRuntimeOnly)
+
+// Add a task to run the functional tests¶
+tasks.register('functionalTest', Test) {
+    description = 'Run the functional tests'
+    group = 'verification'
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
+    useJUnitPlatform()
+}
+
+gradlePlugin.testSourceSets.add(sourceSets.functionalTest)
+
+tasks.named('check') {
+    // Run the functional tests as part of `check`¶
+    dependsOn(tasks.test, tasks.functionalTest)
+}
+
+tasks.named('test') {
+    // Use JUnit Jupiter for unit tests.¶
+    useJUnitPlatform()
 }
 
 gradlePlugin {
@@ -84,26 +80,3 @@ gradlePlugin {
 }
 // How to publish the plugin to the Gradle Plugin Portal?
 // $ ./gradlew publishPlugins
-
-configurations.functionalTestImplementation.extendsFrom(configurations.testImplementation)
-configurations.functionalTestRuntimeOnly.extendsFrom(configurations.testRuntimeOnly)
-
-// Add a task to run the functional tests¶
-tasks.register('functionalTest', Test) {
-    testClassesDirs = sourceSets.functionalTest.output.classesDirs
-    classpath = sourceSets.functionalTest.runtimeClasspath
-    useJUnitPlatform()
-}
-
-gradlePlugin.testSourceSets.add(sourceSets.functionalTest)
-
-tasks.named('check') {
-    // Run the functional tests as part of `check`¶
-    dependsOn(tasks.test, tasks.functionalTest)
-}
-
-tasks.named('test') {
-    // Use JUnit Jupiter for unit tests.¶
-    useJUnitPlatform()
-}
-

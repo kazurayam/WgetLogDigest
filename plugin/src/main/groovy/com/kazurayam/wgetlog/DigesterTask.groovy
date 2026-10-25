@@ -21,11 +21,9 @@ abstract class DigesterTask extends DefaultTask {
 
     DigesterTask() {
         getWgetLogFile().convention(
-                project.file(project.layout.projectDirectory.file("wget.log"))
-                        as Provider<? extends RegularFile>)
+                project.layout.projectDirectory.file("wget.log"))
         getOutputFile().convention(
-                project.file(project.layout.projectDirectory.file("output.txt"))
-                        as Provider<? extends RegularFile>)
+                project.layout.projectDirectory.file("output.txt"))
     }
 
     /**

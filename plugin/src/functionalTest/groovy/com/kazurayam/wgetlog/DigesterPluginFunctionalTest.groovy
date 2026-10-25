@@ -23,7 +23,7 @@ class DigesterPluginFunctionalTest extends Specification {
 
     def "can run task"() {
         given:
-        settingsFile << ""
+        settingsFile << "rootProject.name = 'functional-test-project'"
         buildFile << """                                             
 plugins {                                                            
     id('com.kazurayam.wget-log-digest')                                       
@@ -33,7 +33,7 @@ plugins {
         GradleRunner runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments("wgetLogDigest")
+        runner.withArguments("wgetLogDigest", '--stacktrace')
         runner.withProjectDir(projectDir)
         BuildResult result = runner.build() as BuildResult
 
