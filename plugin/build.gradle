@@ -39,6 +39,11 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
+    // libプロジェクトが開発したcom.kazurayam.wgetlog.Digestクラスを
+    // pluginプロジェクトのcom.kazurayam.wgetlog.DigestPluginクラスが
+    // 参照できるようにする
+    implementation project(":lib")
+
     // Use the awesome Spock testing and specification framework¶
     testImplementation libs.spock.core
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -70,16 +75,15 @@ gradlePlugin {
     plugins {
         register('wgetLogDigest') {
             id = 'com.kazurayam.wget-log-digest'
-            displayName = 'transform wget lot into line-oriented format'
-            description = 'transform the log file of GNU wget command into simpler line-oriented format so that you can post-process it using the line-oriented filters such as grep, sort, uniq, sed and awk'
+            displayName = 'transform a log file of GNU wget command into line-oriented format'
+            description = 'transform a log file of GNU wget command into simpler line-oriented format, which you can post-process using filtering commands such as grep, sort, uniq, sed and awk'
             tags.set(['wget', 'log'])
-            implementationClass = 'com.kazurayam.wgetlog.DigestPlugin'
+            implementationClass = 'com.kazurayam.wgetlog.DigesterPlugin'
         }
     }
 }
 // How to publish the plugin to the Gradle Plugin Portal?
 // $ ./gradlew publishPlugins
-
 
 configurations.functionalTestImplementation.extendsFrom(configurations.testImplementation)
 configurations.functionalTestRuntimeOnly.extendsFrom(configurations.testRuntimeOnly)

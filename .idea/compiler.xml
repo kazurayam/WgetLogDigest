@@ -3,4 +3,12 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="17" />
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="WgetLogDigest.plugin" options="-Xlint:unchecked -Xlint:deprecated" />
+      <module name="WgetLogDigest.plugin.functionalTest" options="-Xlint:unchecked -Xlint:deprecated" />
+      <module name="WgetLogDigest.plugin.main" options="-Xlint:unchecked -Xlint:deprecated" />
+      <module name="WgetLogDigest.plugin.test" options="-Xlint:unchecked -Xlint:deprecated" />
+    </option>
+  </component>
 </project>

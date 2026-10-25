@@ -1,0 +1,51 @@
+package com.kazurayam.wgetlog
+
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.TaskAction
+
+import java.nio.file.Files
+import java.nio.file.Path
+
+abstract class DigesterTask extends DefaultTask {
+
+    @InputFile
+    abstract RegularFileProperty getWgetLogFile()
+
+    @OutputFile
+    abstract RegularFileProperty getOutputFile()
+
+    DigesterTask() {
+        getWgetLogFile().convention(
+                project.file(project.layout.projectDirectory.file("wget.log"))
+                        as Provider<? extends RegularFile>)
+        getOutputFile().convention(
+                project.file(project.layout.projectDirectory.file("output.txt"))
+                        as Provider<? extends RegularFile>)
+    }
+
+    /**
+     * Read a wget log file, transform it into a simpler line-oriented text,
+     * write the result into the output file.
+     */
+    @TaskAction
+    void action() {
+        Path wgetLog = getWgetLogFile().get().asFile.toPath()
+        Digester digester = new Digester(Files.newBufferedReader(wgetLog))
+
+        Path outputFile = getOutputFile().get().asFile.toPath()
+        Files.createDirectories(outputFile.getParent())
+        PrintWriter pw = new PrintWriter(Files.newBufferedWriter(outputFile))
+        while (digester.hasNext()) {
+            WgetLogEntry entry = digester.next()
+            pw.println(entry.toString())
+        }
+        pw.flush()
+        pw.close()
+        println("find output at " + outputFile)
+    }
+}

@@ -89,7 +89,7 @@ Saving to: 'www.example.com/css/common/layout.css'
         }
         pw.flush();
         pw.close();
-        logger.info("find the output at " + out);
+        logger.info("find output at " + out);
     }
 
     @Test
@@ -108,7 +108,7 @@ Saving to: 'www.example.com/css/common/layout.css'
         }
         pw.flush();
         pw.close();
-        logger.info("find the output at " + out);
+        logger.info("find output at " + out);
     }
 
     @Test

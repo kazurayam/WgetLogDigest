@@ -8,9 +8,10 @@ import org.gradle.api.Project
 import spock.lang.Specification
 
 /**¶
- * A simple unit test for the 'org.example.greeting' plugin.
+ * A simple unit test for the id: 'com.kazurayam.wget-log-digest' plugin.
  */
-class DigestPluginTest extends Specification {
+class DigesterPluginTest extends Specification {
+
     def "plugin registers task"() {
         given:
         Project project = ProjectBuilder.builder().build()
@@ -19,6 +20,6 @@ class DigestPluginTest extends Specification {
         project.plugins.apply("com.kazurayam.wget-log-digest")
 
         then:
-        project.tasks.findByName("wget-log-digest") != null
+        project.tasks.named("wgetLogDigest") != null
     }
 }
