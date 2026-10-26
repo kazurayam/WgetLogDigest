@@ -1,0 +1,16 @@
+plugins {
+    id("com.kazurayam.wget-log-digest") version "0.1.0"
+}
+
+tasks.register('demonstrate') {
+    doFirst {
+        layout.buildDirectory.file("tmp/out/output.txt")
+    }
+    wgetLogGenerate {
+        wgetLogFile = layout.projectDirectory.file("../plugin/src/test/fixtures/wget.log")
+        outputFile = layout.buildDirectory.file("tmp/functionalTest/output.txt")
+    }
+    doLast {
+        layout.buildDirectory.file("tmp/out/output.txt")
+    }
+}
