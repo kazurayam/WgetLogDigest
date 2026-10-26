@@ -1,6 +1,6 @@
 package com.kazurayam.wgetlog
 
-import org.gradle.BuildResult
+import org.gradle.testkit.runner.BuildResult
 import spock.lang.Specification
 import spock.lang.TempDir
 import org.gradle.testkit.runner.GradleRunner
@@ -11,7 +11,7 @@ import org.gradle.testkit.runner.GradleRunner
 class DigesterPluginFunctionalTest extends Specification {
 
     @TempDir
-    private File projectDir
+    private File projectDir  // allocated by Spock
 
     private getBuildFile() {
         new File(projectDir, "build.gradle")
@@ -27,17 +27,30 @@ class DigesterPluginFunctionalTest extends Specification {
         buildFile << """                                             
 plugins {                                                            
     id('com.kazurayam.wget-log-digest')                                       
+}
+
+task demonstrate {
+    doFirst {
+        delete layout.buildDirectory.dir("tmp/functionalTest")
+    }
+    wgetLogDigest {
+        wgetLogFile = layout.projectDirectory.file("src/test/fixtures/wget.log")
+        outputFile = layout.buildDirectory.file("tmp/functionalTest/output.txt")
+    }
+    doLast {
+        println "output at " + layout.buildDirectory.file("tmp/functionalTest/output.txt").get()
+    }
 }                                                                   
 """
         when:
         GradleRunner runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments("wgetLogDigest", '--stacktrace')
+        runner.withArguments("demonstrate", '--stacktrace')
         runner.withProjectDir(projectDir)
         BuildResult result = runner.build() as BuildResult
 
         then:
-        result.output.contains("find output at ")
+        result.output.contains("output at ")
     }
 }

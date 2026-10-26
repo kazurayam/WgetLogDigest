@@ -44,6 +44,5 @@ abstract class DigesterTask extends DefaultTask {
         }
         pw.flush()
         pw.close()
-        println("find output at " + outputFile)
     }
 }
