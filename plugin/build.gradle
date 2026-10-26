@@ -100,3 +100,13 @@ publishがうまくいかなくて原因調査のためにログがみたいな�
 ポータルに書き込みせず検証だけを行いたいなら --validate-only オプションが有効です
 ./gradlew :plugin:publishPlugin --validate-only
  */
+
+// Gradle Plugin Portalへの認証情報が設定されているかどうかを確認する
+tasks.register("checkPublishCredentials") {
+    doLast {
+        def key = providers.gradleProperty("gradle.publish.key").orNull
+        def secret = providers.gradleProperty("gradle.publish.secret").orNull
+        println "gradle.publish.key: " + (key ? "設定あり" : "未設定")
+        println "gradle.publish.secret: " + (secret ? "設定あり" : "未設定")
+    }
+}
