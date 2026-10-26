@@ -8,17 +8,14 @@ plugins {
     // publish my plugin to the Gradle Plugin Portal
     // see https://plugins.gradle.org/u/kazurayam
     id 'com.gradle.plugin-publish' version '2.2.1'
-
-    id 'com.gradleup.shadow' version '8.3.11'
 }
-
-group = 'com.kazurayam'
-version = '0.1.4'
 
 repositories {
     // Use Maven Central for resolving dependencies.¶
     mavenCentral()
+    mavenLocal()
 }
+
 // Add a source set for the functional test suite¶
 sourceSets {
     functionalTest {
@@ -81,18 +78,10 @@ gradlePlugin {
     }
 }
 
-// Plugin Portalに公開する成果物をfat JARにして :libプロジェクトの Digesterクラスなどを同梱する
-tasks.named('shadowJar') {
-    archiveClassifier = ''
-}
-
-/* ビルドと公開には次を実行します。
-
-./gradlew :plugin:shadowJar
+/**
+ * pluginをGradle Plugin Portalにアップするには下記のコマンドを実行する。
+ *
 ./gradlew :plugin:publishPlugins
-
-`implementation project(':lib')` が `:lib` の成果物をビルド依存として
-取り込み、ShadowがそのクラスをプラグインJARにまとめます。
 
 publishがうまくいかなくて原因調査のためにログがみたいならば --info オプションが有効です
 ./gradlew :plugin:publishPlugins --info
