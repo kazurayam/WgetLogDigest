@@ -1,11 +1,21 @@
+// WgetLogDigest/lib/build.gradle
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+    id 'com.vanniktech.maven.publish' version '0.37.0'
+}
+
+group 'com.kazurayam'
+version '0.1.0'
+
+ext {
+    GitHubUserName = 'kazurayam'
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -37,4 +47,39 @@ java {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+
+    coordinates(project.group,    // com.kazurayam
+            'wget-log-digest',
+            project.version)
+
+    pom {
+        name.set(project.rootProject.name)
+        description.set('A utility class accepts a log of of GNU wget command, parse it to transform the log entries into simpler line-oriented format')
+        inceptionYear.set('2026')
+        url.set("https://${GitHubUserName}.github.io/WgetLogDigest/")
+        licenses {
+            license {
+                name.set('The Apache License, Version 2.0')
+                url.set('https://www.apache.org.licenses/LICENSE-2.0.txt')
+                distribution.set('http://www.apache.org/licenses/LICENSE-2.0.txt')
+            }
+        }
+        developers {
+            developer {
+                id.set("${GitHubUserName}")
+                name.set('URAYAMA,kazuaki')
+                url.set("https://github.com/${GitHubUserName}/")
+            }
+        }
+        scm {
+            connection = "scm:git:https://github.com/${GitHubUserName}/${project.rootProject.name}.git"
+            developerConnection = "scm:git:git@github.com:${GitHubUserName}/${project.rootProject.name}.git"
+            url = "https://github.com/${GitHubUserName}/${project.rootProject.name}"
+        }
+    }
 }
