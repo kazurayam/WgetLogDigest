@@ -89,3 +89,8 @@ tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {
     outputFile = file("./build/tmp/out/output.txt")
 }
 ```
+
+## Published
+
+1. Maven Central, [wget-log-digest](https://central.sonatype.com/artifact/com.kazurayam/wget-log-digest)
+2. Gradle Plugin Portal, [com.kazurayam.wget-log-digest-plugin](https://plugins.gradle.org/plugin/com.kazurayam.wget-log-digest-plugin)

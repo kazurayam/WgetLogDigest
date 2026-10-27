@@ -2,3 +2,12 @@ allprojects {
     group 'com.kazurayam'
     version '0.1.7'
 }
+
+tasks.register('publishDocs') {
+    doFirst {
+        copy {
+            from "lib/build/docs"
+            into "docs/lib"
+        }
+    }
+}

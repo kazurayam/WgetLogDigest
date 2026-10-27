@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.kazurayam.wgetlog","l":"Digester"},{"p":"com.kazurayam.wgetlog","l":"RewindableLineReader"},{"p":"com.kazurayam.wgetlog","l":"WgetLogEntry"}];updateSearchResults();
