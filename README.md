@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Let me assume you ran the [wget](https://www.gnu.org/software/wget/) command to scrape a website of your interest. You can save the log information into a local file. You want to find out the URLs that responded "404 Not Found". The result will be useful to administrate the website. You can check the faulty URLs and do any possible improvements. The following fragment shows an example of log emitted by wget:
+Let me assume you ran the [wget](https://www.gnu.org/software/wget/) command to scrape a website of your interest. You saved the log information into a local file. The following fragment shows an example of log emitted by wget:
 
 ```text
 ...
@@ -59,9 +59,11 @@ Saving to: 'www.myapp.jp/img/index/page_top.png'
 ...
 ```
 
-You can easily find that the format of `wget`'s log is not *line-oriented*. Therefore it is difficult to post-process using line-oriented tools such as [`grep`](https://www.gnu.org/software/grep/) and [`sed`](https://www.gnu.org/software/sed/).
+Now you would certainly desire a list of faulty URLs that responded "404 Not Found".
 
-`WgetLogDigest` is a tiny tool in Java that transforms a wget's log file into another file in a line-oriented format. For example, the origina log entries showed above will be transformed as follows:
+However, as you easily see, the format of entries in `wget` log is not *line-oriented*. It is not suitable for post-processing with line-oriented tools such as [`grep`](https://www.gnu.org/software/grep/) and [`sed`](https://www.gnu.org/software/sed/).
+
+Now I present `WgetLogDigest`, which is a tiny tool in Java that transforms a wget's log file into another file in a line-oriented format. For example, the original log entries showed above will be transformed into something like this:
 
 ```text
 2026-10-23 22:03:04  http://www.myapp.jp/index.html  200  OK
@@ -75,7 +77,9 @@ Each lines in the output file will be TAB-delimited, like this
 
 yyyy-MM--dd hh:mm:ss **\t** URL **\t** status **\t** message
 
-## How to use it
+You can easily filter the lines using grep to get a list of faulty URLs accessed.
+
+## How to use WgetLogDigest
 
 A custom Gradle Plugin is provided. Here I quote a sample [build.gradle](https://github.com/kazurayam/WgetLogDigest/blob/master/rehearsal/build.gradle).
 
@@ -89,6 +93,8 @@ tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {
     outputFile = file("./build/tmp/out/output.txt")
 }
 ```
+
+The component Java classes are published at Maven Central. You can use it as a port of your Java projects.
 
 ## Published
 
