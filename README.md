@@ -1,5 +1,7 @@
 # WgetLogDigest
 
+## Motivation
+
 Let me assume you ran the [wget](https://www.gnu.org/software/wget/) command to scrape a website of your interest. You can save the log information into a local file. You want to find out the URLs that responded "404 Not Found". The result will be useful to administrate the website. You can check the faulty URLs and do any possible improvements. The following fragment shows an example of log emitted by wget:
 
 ```text
@@ -73,3 +75,17 @@ Each lines in the output file will be TAB-delimited, like this
 
 yyyy-MM--dd hh:mm:ss **\t** URL **\t** status **\t** message
 
+## How to use it
+
+A custom Gradle Plugin is provided. Here I quote a sample [build.gradle](https://github.com/kazurayam/WgetLogDigest/blob/master/rehearsal/build.gradle).
+
+```gradle
+plugins {
+    id("com.kazurayam.wget-log-digest-plugin") version "0.1.7"
+}
+
+tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {
+    wgetLogFile = file("../plugin/src/test/fixtures/wget.log")
+    outputFile = file("./build/tmp/out/output.txt")
+}
+```

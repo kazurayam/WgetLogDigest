@@ -17,7 +17,7 @@ class DigesterPluginTest extends Specification {
         Project project = ProjectBuilder.builder().build()
 
         when:
-        project.plugins.apply("com.kazurayam.wget-log-digest")
+        project.plugins.apply("com.kazurayam.wget-log-digest-plugin")
 
         then:
         project.tasks.named("wgetLogDigest") != null

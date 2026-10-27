@@ -47,37 +47,48 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+// see https://vanniktech.github.io/gradle-maven-publish-plugin/central/ for reference
 mavenPublishing {
-    publishToMavenCentral()
+    publishToMavenCentral(true)
     signAllPublications()
 
-    coordinates(project.group,    // com.kazurayam
+    coordinates(project.group.toString(),    // com.kazurayam
             'wget-log-digest',
-            project.version)
+            project.version.toString()      // e.g, 0.1.0
+    )
 
     pom {
-        name.set(project.rootProject.name)
-        description.set('A utility class accepts a log of of GNU wget command, parse it to transform the log entries into simpler line-oriented format')
-        inceptionYear.set('2026')
-        url.set("https://${GitHubUserName}.github.io/WgetLogDigest/")
+        name = project.rootProject.name
+        description = 'A utility class accepts a log of of GNU wget command, parse it to transform the log entries into simpler line-oriented format'
+        inceptionYear = '2026'
+        url = "https://${GitHubUserName}.github.io/WgetLogDigest/"
         licenses {
             license {
-                name.set('The Apache License, Version 2.0')
-                url.set('https://www.apache.org.licenses/LICENSE-2.0.txt')
-                distribution.set('http://www.apache.org/licenses/LICENSE-2.0.txt')
+                name = 'The Apache License, Version 2.0'
+                url = 'https://www.apache.org.licenses/LICENSE-2.0.txt'
+                distribution = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
             }
         }
         developers {
             developer {
-                id.set("${GitHubUserName}")
-                name.set('URAYAMA,kazuaki')
-                url.set("https://github.com/${GitHubUserName}/")
+                id = "${GitHubUserName}"
+                name = 'URAYAMA,kazuaki'
+                url = "https://github.com/${GitHubUserName}/"
             }
         }
         scm {
+            url = "https://github.com/${GitHubUserName}/${project.rootProject.name}"
             connection = "scm:git:https://github.com/${GitHubUserName}/${project.rootProject.name}.git"
             developerConnection = "scm:git:git@github.com:${GitHubUserName}/${project.rootProject.name}.git"
-            url = "https://github.com/${GitHubUserName}/${project.rootProject.name}"
         }
     }
 }
+
+/* to publish snapshot, run the command:
+
+  $ ./gradlew publishToMavenCentral
+
+and check
+
+  https://central.sonatype.com/repository/maven-snapshots/
+ */

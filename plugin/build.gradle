@@ -69,7 +69,7 @@ gradlePlugin {
     // Define the plugin¶
     plugins {
         register('wgetLogDigest') {
-            id = 'com.kazurayam.wget-log-digest'
+            id = 'com.kazurayam.wget-log-digest-plugin'
             displayName = 'transform a log file of GNU wget command into line-oriented format'
             description = 'transform a log file of GNU wget command into simpler line-oriented format, which you can post-process using filtering commands such as grep, sort, uniq, sed and awk'
             tags.set(['wget', 'log'])

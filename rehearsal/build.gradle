@@ -2,7 +2,7 @@ plugins {
     id("com.kazurayam.wget-log-digest-plugin") version "0.1.7"
 }
 
-wgetLogDigest {
+tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {
     wgetLogFile = file("../plugin/src/test/fixtures/wget.log")
     outputFile = file("./build/tmp/out/output.txt")
 }

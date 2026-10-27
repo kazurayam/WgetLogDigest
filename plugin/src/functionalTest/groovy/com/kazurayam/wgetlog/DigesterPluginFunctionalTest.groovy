@@ -26,10 +26,10 @@ class DigesterPluginFunctionalTest extends Specification {
         settingsFile << "rootProject.name = 'functional-test-project'"
         buildFile << """                                             
 plugins {                                                            
-    id('com.kazurayam.wget-log-digest')                                       
+    id('com.kazurayam.wget-log-digest-plugin')                                       
 }
 
-task demonstrate {
+tasks.register('demonstrate') {
     doFirst {
         delete layout.buildDirectory.dir("tmp/functionalTest")
     }
@@ -48,7 +48,7 @@ task demonstrate {
         runner.withPluginClasspath()
         runner.withArguments("demonstrate", '--stacktrace')
         runner.withProjectDir(projectDir)
-        BuildResult result = runner.build() as BuildResult
+        BuildResult result = runner.build()
 
         then:
         result.output.contains("output at ")
