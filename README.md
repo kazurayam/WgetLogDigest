@@ -94,3 +94,4 @@ tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {
 
 1. Maven Central, [wget-log-digest](https://central.sonatype.com/artifact/com.kazurayam/wget-log-digest)
 2. Gradle Plugin Portal, [com.kazurayam.wget-log-digest-plugin](https://plugins.gradle.org/plugin/com.kazurayam.wget-log-digest-plugin)
+3. [API javadoc](https://kazurayam.github.io/WgetLogDigest/lib/javadoc/index.html)

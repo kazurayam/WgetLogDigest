@@ -19,7 +19,7 @@ public class Digester implements Iterator<WgetLogEntry> {
     private final RewindableLineReader rlr;
     WgetLogEntry nextEntry = null;
 
-    Digester(Reader reader) {
+    public Digester(Reader reader) {
         rlr = new RewindableLineReader(reader);
         nextEntry = digest(rlr);
     }

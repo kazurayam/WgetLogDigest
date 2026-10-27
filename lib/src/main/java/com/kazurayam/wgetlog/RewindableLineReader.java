@@ -18,7 +18,7 @@ public class RewindableLineReader {
         br = new BufferedReader(reader);
         lineStack = new Stack<>();
     }
-    String getLine() {
+    public String getLine() {
         String line = null;
         if (lineStack.isEmpty()) {
             try {
@@ -34,11 +34,11 @@ public class RewindableLineReader {
         }
         return line;
     }
-    void ungetLine(String line) {
+    public void ungetLine(String line) {
         Objects.requireNonNull(line);
         lineStack.push(line);
     }
-    void close() {
+    public void close() {
         try {
             br.close();
         } catch (IOException e) {
