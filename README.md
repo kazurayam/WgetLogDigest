@@ -85,7 +85,7 @@ A custom Gradle Plugin is provided. Here I quote a sample [build.gradle](https:/
 
 ```gradle
 plugins {
-    id("com.kazurayam.wget-log-digest-plugin") version "0.1.7"
+    id("com.kazurayam.wget-log-digest-plugin") version "0.1.9"
 }
 
 tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {
