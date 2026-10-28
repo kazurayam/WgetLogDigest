@@ -58,6 +58,14 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            artifactId = 'wget-log-digest-plugin'
+        }
+    }
+}
+
 gradlePlugin {
     // configure the `java-gradle-plugin` so that it looks at the `sourceSets.functionalTest`
     // to find the tests for the custom plugin
@@ -78,7 +86,6 @@ gradlePlugin {
         }
     }
 }
-
 /**
  * pluginをGradle Plugin Portalにアップするには下記のコマンドを実行する。
  *
@@ -87,9 +94,11 @@ gradlePlugin {
 publishがうまくいかなくて原因調査のためにログがみたいならば --info オプションが有効です
 ./gradlew :plugin:publishPlugins --info
 
-ポータルに書き込みせず検証だけを行いたいなら --validate-only オプションが有効です
+ポータルに書き込みせずに、ポータルに投げることができるか検証だけを行いたいなら --validate-only オプションが有効です
 ./gradlew :plugin:publishPlugin --validate-only
  */
+
+
 
 // Gradle Plugin Portalへの認証情報が設定されているかどうかを確認する
 tasks.register("checkPublishCredentials") {
