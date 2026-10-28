@@ -1,5 +1,5 @@
 plugins {
-    id("com.kazurayam.wget-log-digest-plugin") version "0.1.7"
+    id("com.kazurayam.wget-log-digest-plugin") version "0.1.8"
 }
 
 tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {

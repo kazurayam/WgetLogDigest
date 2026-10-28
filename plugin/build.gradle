@@ -26,7 +26,8 @@ dependencies {
     // libプロジェクトが開発したcom.kazurayam.wgetlog.Digestクラスを
     // pluginプロジェクトのcom.kazurayam.wgetlog.DigestPluginクラスが
     // 参照できるようにする
-    implementation project(":lib")
+    implementation("com.kazurayam:wget-log-digest:0.1.8")
+    //implementation project(":lib")
 
     // Use the awesome Spock testing and specification framework¶
     testImplementation libs.spock.core
