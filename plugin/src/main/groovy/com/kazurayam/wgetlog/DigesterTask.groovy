@@ -1,9 +1,7 @@
 package com.kazurayam.wgetlog
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
@@ -33,15 +31,18 @@ abstract class DigesterTask extends DefaultTask {
     @TaskAction
     void action() {
         Path wgetLog = getWgetLogFile().get().asFile.toPath()
-        Digester digester = new Digester(Files.newBufferedReader(wgetLog))
+        BufferedReader br = Files.newBufferedReader(wgetLog)
+        Digester digester = new Digester(br)
 
         Path outputFile = getOutputFile().get().asFile.toPath()
         Files.createDirectories(outputFile.getParent())
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(outputFile))
+
         while (digester.hasNext()) {
             WgetLogEntry entry = digester.next()
             pw.println(entry.toString())
         }
+        br.close()
         pw.flush()
         pw.close()
     }

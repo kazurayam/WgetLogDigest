@@ -1,6 +1,6 @@
 allprojects {
-    group 'com.kazurayam'
-    version '0.1.8'
+    group = 'com.kazurayam'
+    version = '0.1.11'
 }
 
 tasks.register('publishDocs') {

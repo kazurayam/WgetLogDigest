@@ -4,6 +4,7 @@ import org.gradle.testkit.runner.BuildResult
 import spock.lang.Specification
 import spock.lang.TempDir
 import org.gradle.testkit.runner.GradleRunner
+import java.nio.file.Paths
 
 /**¶
  * A simple functional test for the 'com.kazurayam.wget-log-digest' plugin.
@@ -21,7 +22,7 @@ class DigesterPluginFunctionalTest extends Specification {
         new File(projectDir, "settings.gradle")
     }
 
-    def "can run task"() {
+    def "can run wgetLogDigest task"() {
         given:
         settingsFile << "rootProject.name = 'functional-test-project'"
         buildFile << """                                             
@@ -30,15 +31,13 @@ plugins {
 }
 
 tasks.register('demonstrate') {
-    doFirst {
-        delete layout.buildDirectory.dir("tmp/functionalTest")
-    }
+    def output = layout.buildDirectory.file("tmp/functionalTest/straight/output.txt")
     wgetLogDigest {
         wgetLogFile = layout.projectDirectory.file("src/test/fixtures/wget.log")
-        outputFile = layout.buildDirectory.file("tmp/functionalTest/output.txt")
+        outputFile = output
     }
     doLast {
-        println "output at " + layout.buildDirectory.file("tmp/functionalTest/output.txt").get()
+        println "output at " + output.get()
     }
 }                                                                   
 """
