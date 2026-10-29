@@ -1,8 +1,32 @@
 plugins {
-    id("com.kazurayam.wget-log-digest-plugin") version "0.1.9"
+    id("com.kazurayam.wget-log-digest-plugin") version "0.1.11"
 }
 
-tasks.register("demonstrate", com.kazurayam.wgetlog.DigesterTask) {
+tasks.register('digest', com.kazurayam.wgetlog.DigesterTask) {
     wgetLogFile = file("../plugin/src/test/fixtures/wget.log")
-    outputFile = file("./build/tmp/out/output.txt")
+    outputFile = file("./build/tmp/out/straight.txt")
+}
+
+import org.gradle.process.ExecOperations
+
+interface InjectedExecOps {
+    @javax.inject.Inject
+    ExecOperations getExecOps()
+}
+
+tasks.register('listFaultyURLs') {
+    dependsOn('digest')
+    def injected = project.objects.newInstance(InjectedExecOps)
+    def stdout = new ByteArrayOutputStream()
+    doLast {
+        new ByteArrayOutputStream().withStream { os ->
+            def result = injected.execOps.exec {
+                commandLine 'grep', '404', "./build/tmp/out/straight.txt"
+                ignoreExitValue = true
+                standardOutput = os
+            }
+            def outputFile = file("./build/tmp/out/faultyURLs.txt")
+            outputFile.text = os.toString()
+        }
+    }
 }
