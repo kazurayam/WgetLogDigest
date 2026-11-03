@@ -13,27 +13,49 @@ public class RewindableLineReader {
 
     BufferedReader br;
     Stack<String> lineStack;
+    int lineCount;
 
     public RewindableLineReader(Reader reader) {
         br = new BufferedReader(reader);
+        lineCount = 0;
         lineStack = new Stack<>();
     }
+
+    /**
+     *
+     * @return a line with \n, else null at the end of the source Reader
+     */
     public String getLine() {
         String line = null;
         if (lineStack.isEmpty()) {
-            try {
-                line = br.readLine();
-                if (line != null) {
-                    line += "\n";
-                }
-            } catch (IOException e) {
-                logger.error("", e);
+            line = getLineSanitizingException();
+            if (line != null) {
+                line += "\n";
             }
         } else {
             line = lineStack.pop();
         }
         return line;
     }
+
+    /**
+     *
+     * @return a line of string without \n, else null. When any Exception raised,
+     * the Exception will be logged and continue reading the next line.
+     * Any Exception won't be raised.
+     */
+    private String getLineSanitizingException() {
+        String line = null;
+        try {
+            lineCount++;
+            line = br.readLine();
+        } catch (Exception e) {
+            logger.error("failed to read a line #{}", lineCount);
+            line = getLineSanitizingException();
+        }
+        return line;
+    }
+
     public void ungetLine(String line) {
         Objects.requireNonNull(line);
         lineStack.push(line);
