@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WgetLogDigest.iml" filepath="$PROJECT_DIR$/.idea/modules/WgetLogDigest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/WgetLogDigest.lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/WgetLogDigest.lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin/WgetLogDigest.plugin.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin/WgetLogDigest.plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/WgetLogParser.lib.test.iml" />
