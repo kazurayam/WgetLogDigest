@@ -1,9 +1,10 @@
 plugins {
-    id("com.kazurayam.wget-log-digest-plugin") version "0.1.11"
+    id("com.kazurayam.wget-log-digest-plugin") version "0.1.13"
 }
 
 tasks.register('digest', com.kazurayam.wgetlog.DigesterTask) {
     wgetLogFile = file("../plugin/src/test/fixtures/wget.log")
+    logEncoding = "Shift_JIS"
     outputFile = file("./build/tmp/out/straight.txt")
 }
 
