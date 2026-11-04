@@ -9,6 +9,8 @@
 !.idea/modules.xml
 !.idea/encodings.xml
 
+bin
+
 # Ignore Gradle project-specific cache directory
 .gradle
 
