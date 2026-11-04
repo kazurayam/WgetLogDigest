@@ -123,7 +123,6 @@ Gradleの `build.gradle` のサンプルを下記に示します。ここでは 
     2026-10-23 22:03:06  http://www.myapp.com/robots.txt 404 Not Found
     2026-10-23 22:03:26 https://www.myapp.com/robots.txt    404 Not Found
     2026-10-23 22:03:36 http://www.myapp.com/privacy/index.html 404 Not Found
-    2026-10-23 22:04:43 http://www.myapp.com/member/documents/20261017/%E9%9A%A8%EF%BD%AC149%E8%9D%97%E6%A8%A3%E6%90%A8%E8%AD%BD%EF%BD%AE%E9%80%B5%EF%BD%BC%E9%81%98%E9%B7%B9%E5%AF%94%E9%9A%B2%87%E8%8E%A8%9A2026%E9%81%98%E4%B9%9D%83%E5%8A%B1%CE%9F%E7%B9%A7%EF%BD%B0%E7%B9%9D%EF%BD%A9%E7%B9%9D%A0.pdf  404 Not Found
     2026-10-23 22:04:55 http://www.myapp.com/member/movie.html  404 Not Found
     2026-10-23 22:04:58 http://www.myapp.com/images/school_01s.gif  404 Not Found
     2026-10-23 22:05:20 http://www.myapp.com/images/qr_bg.gif   404 Not Found

@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,22 +21,26 @@ public class Digester implements Iterator<WgetLogEntry> {
     private final RewindableLineReader rlr;
     WgetLogEntry nextEntry = null;
 
-    public Digester(Reader reader) {
+    public Digester(Reader reader) throws IOException {
         rlr = new RewindableLineReader(reader);
         nextEntry = digest(rlr);
     }
 
     public WgetLogEntry next() {
-        WgetLogEntry buffer = nextEntry;
-        nextEntry = digest(rlr);
-        return buffer;
+        try {
+            WgetLogEntry buffer = nextEntry;
+            nextEntry = digest(rlr);
+            return buffer;
+        } catch (IOException e) {
+            throw new NoSuchElementException(e);
+        }
     }
 
     public boolean hasNext() {
         return nextEntry != null;
     }
 
-    private WgetLogEntry digest(RewindableLineReader rlr) {
+    private WgetLogEntry digest(RewindableLineReader rlr) throws IOException {
         StringBuilder sb = new StringBuilder();
         String line;
         while((line = rlr.getLine()) != null) {

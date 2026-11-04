@@ -51,7 +51,7 @@ Saving to: 'www.example.com/css/common/layout.css'
 
 """;
 
-    @Test void test_hasNext_next() {
+    @Test void test_hasNext_next() throws IOException {
         Digester digester = new Digester(new StringReader(content));
         //
         assertTrue(digester.hasNext());
