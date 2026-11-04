@@ -34,6 +34,7 @@ tasks.register('demonstrate') {
     def output = layout.buildDirectory.file("tmp/functionalTest/straight/output.txt")
     wgetLogDigest {
         wgetLogFile = layout.projectDirectory.file("src/test/fixtures/wget.log")
+        logEncoding = "Shift_JIS"
         outputFile = output
     }
     doLast {
