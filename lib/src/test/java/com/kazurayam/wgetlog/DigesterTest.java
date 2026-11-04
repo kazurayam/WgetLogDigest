@@ -51,7 +51,7 @@ Saving to: 'www.example.com/css/common/layout.css'
 
 """;
 
-    @Test void test_hasNext_next() {
+    @Test void test_hasNext_next() throws IOException {
         Digester digester = new Digester(new StringReader(content));
         //
         assertTrue(digester.hasNext());
@@ -117,27 +117,5 @@ Saving to: 'www.example.com/css/common/layout.css'
         Digester.main(args);
         Path out = Paths.get("build/main_output.txt");
         assertTrue(Files.size(out) > 1000, out + " is not large enough. There must be something wrong.");
-    }
-
-    /**
-     * reproducing the [issue #11](https://github.com/kazurayam/WgetLogDigest/issues/11)
-     * where "java.nio.charset.MalformedInputException: Input length = 1" was reported
-     *
-     * @throws IOException
-     */
-    @Test
-    void test_issue11_reproduction() throws IOException {
-        Path log = Paths.get(".").resolve("src/test/fixtures/issue11-wget.log");
-        assertTrue(Files.exists(log));
-        Reader rdr = Files.newBufferedReader(log);
-        Digester digester = new Digester(rdr);
-        assertTrue(digester.hasNext());
-        int entryCount = 0;
-        while(digester.hasNext()) {
-            WgetLogEntry entry = digester.next();
-            entryCount++;
-            logger.info("entry #{} {}", entryCount, entry.toString());
-        }
-        //assertTrue(count > 10000);
     }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.StringReader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +15,7 @@ public class RewindableLineReaderTest {
     private static final Logger logger = LoggerFactory.getLogger(RewindableLineReaderTest.class);
 
     @Test
-    void test_getLine_ungetLine() {
+    void test_getLine_ungetLine() throws IOException {
         String content = """
 aaaa
 --bb

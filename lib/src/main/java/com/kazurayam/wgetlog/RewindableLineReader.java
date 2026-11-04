@@ -3,6 +3,7 @@ package com.kazurayam.wgetlog;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.MalformedInputException;
 import java.util.Objects;
 import java.util.Stack;
 import org.slf4j.Logger;
@@ -25,33 +26,19 @@ public class RewindableLineReader {
      *
      * @return a line with \n, else null at the end of the source Reader
      */
-    public String getLine() {
+    public String getLine() throws IOException {
         String line = null;
         if (lineStack.isEmpty()) {
-            line = getLineSanitizingException();
-            if (line != null) {
-                line += "\n";
+            try {
+                line = br.readLine();
+                if (line != null) {
+                    line += "\n";
+                }
+            } catch (MalformedInputException e) {
+                throw new IOException("PLS specify the charset used for the input file", e);
             }
         } else {
             line = lineStack.pop();
-        }
-        return line;
-    }
-
-    /**
-     *
-     * @return a line of string without \n, else null. When any Exception raised,
-     * the Exception will be logged and continue reading the next line.
-     * Any Exception won't be raised.
-     */
-    private String getLineSanitizingException() {
-        String line = null;
-        try {
-            lineCount++;
-            line = br.readLine();
-        } catch (Exception e) {
-            logger.error("failed to read a line #{}", lineCount);
-            line = getLineSanitizingException();
         }
         return line;
     }
