@@ -24,6 +24,7 @@ abstract class DigesterTask extends DefaultTask {
     abstract RegularFileProperty getOutputFile()
 
     DigesterTask() {
+        logger.lifecycle 'DigesterTask constructing'
         getWgetLogFile().convention(
                 project.layout.projectDirectory.file("wget.log"))
         getLogEncoding().convention("UTF-8")
@@ -37,6 +38,7 @@ abstract class DigesterTask extends DefaultTask {
      */
     @TaskAction
     void action() {
+        logger.lifecycle 'DigesterTask started'
         Path wgetLog = getWgetLogFile().get().asFile.toPath()
         Charset charset = Charset.forName(getLogEncoding().get().toString())
         BufferedReader br = Files.newBufferedReader(wgetLog, charset)
@@ -45,7 +47,6 @@ abstract class DigesterTask extends DefaultTask {
         Path outputFile = getOutputFile().get().asFile.toPath()
         Files.createDirectories(outputFile.getParent())
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(outputFile))
-
         while (digester.hasNext()) {
             WgetLogEntry entry = digester.next()
             pw.println(entry.toString())
@@ -53,5 +54,6 @@ abstract class DigesterTask extends DefaultTask {
         br.close()
         pw.flush()
         pw.close()
+        logger.lifecycle 'DigesterTask finished'
     }
 }

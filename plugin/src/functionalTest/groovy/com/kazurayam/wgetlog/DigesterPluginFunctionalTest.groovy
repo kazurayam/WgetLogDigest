@@ -17,6 +17,8 @@ class DigesterPluginFunctionalTest extends Specification {
 
     private File inputFile = getInputFile('issue15-wget.log')
 
+    private File outputFile = projectDir.toPath().resolve('build/digested.txt').toFile()
+
     private getBuildFile() {
         new File(projectDir, "build.gradle")
     }
@@ -33,29 +35,28 @@ plugins {
     id('com.kazurayam.wget-log-digest-plugin')                                       
 }
 
-tasks.register('demonstrate') {
-    def output = layout.buildDirectory.file("tmp/functionalTest/straight/output.txt")
-    wgetLogDigest {
-        wgetLogFile = project.file("${inputFile.toString()}")
-        logEncoding = "Shift_JIS"
-        outputFile = output
-    }
-    doLast {
-        println "output at " + output.get()
-        assert output.get().asFile.exists()
-    }
-}                                                                   
+def log = project.file("${inputFile.toString()}")    
+def output = project.file("${outputFile.toString()}")
+
+logger.lifecycle("output at ${outputFile}")
+
+tasks.register('digest', com.kazurayam.wgetlog.DigesterTask) {
+    wgetLogFile = log
+    logEncoding = "Shift_JIS"
+    outputFile = output
+}
 """
         when:
         GradleRunner runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments("demonstrate", '--stacktrace')
+        runner.withArguments("digest")
         runner.withProjectDir(projectDir)
         BuildResult result = runner.build()
 
         then:
-        result.output.contains("output at ")
+        outputFile.exists()
+        result.getOutput().contains("output at")
     }
 
     private static File newProjectDir(String testCase) {
@@ -67,7 +68,6 @@ tasks.register('demonstrate') {
         if (!dir.mkdirs()) {
             throw new IllegalStateException('ディレクトリを作成できません: ${dir}')
         }
-        println "Functional testproject: ${dir.absolutePath}"
         return dir
     }
 
@@ -80,7 +80,6 @@ tasks.register('demonstrate') {
         if (!Files.exists(inputFile)) {
             throw new IllegalStateException('inputFileが存在しません: ${inputFile}')
         }
-        println "Functional test inputFile: ${inputFile.toAbsolutePath()}"
         return inputFile.toFile()
     }
 }
