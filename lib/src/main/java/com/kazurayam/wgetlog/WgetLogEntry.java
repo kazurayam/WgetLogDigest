@@ -19,17 +19,43 @@ import org.slf4j.LoggerFactory;
 public class WgetLogEntry {
     private static final Logger logger = LoggerFactory.getLogger(WgetLogEntry.class);
 
+    /**
+     * e.g. "2026-10-23 22:03:06"
+     */
     static final String regexDateTime = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}";
+
+    /**
+     * e.g. "http://example.com/robots.txt"
+     *      "https://www.aomori-gankaikai.jp/css/common/general.css"
+     */
     static final String regexURL = "(http|https)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*";
 
-    // e.g　"--2026-10-23 22:03:06--  http://example.com/robots.txt"
+    /**
+     * e.g. "--2026-10-23 22:03:06--  http://example.com/robots.txt"
+     */
     static final Pattern PATTERN_STARTER =
-            Pattern.compile("--" + "(" + regexDateTime + ")" + "--\\s{2}" + "(" + regexURL + ")" );
+            Pattern.compile("--" + "(" + regexDateTime + ")" + "--\\s{2}" +
+                    "(" + "\\(try:\\s*\\d{1,2}\\)\\s{2}" + ")?" +
+                    "(" + regexURL + ")" );
 
-    // e.g "HTTP request sent, awaiting response... 200 OK"
-    //     "HTTP request sent, awaiting response... 404 Not Found"
+    /**
+     * e.g. "HTTP request sent, awaiting response... 200 OK"
+     *      "HTTP request sent, awaiting response... 404 Not Found"
+     */
     static final Pattern PATTERN_RESPONSE_STATUS =
             Pattern.compile("HTTP request sent, awaiting response... (\\d{3}) ([\\w\\s]+)$");
+
+    /**
+     * e.g. "PATTERN_NO_DATA_RECEIVED"
+     */
+    static final Pattern PATTERN_NO_DATA_RECEIVED =
+            Pattern.compile("\\s*HTTP request sent, awaiting response... No data received\\.");
+
+    /**
+     * e.g. "Unable to establish SSL connection."
+     */
+    static final Pattern PATTERN_UNABLE_TO_ESTABLISH_SSL_CONNECTION =
+            Pattern.compile("\\s*Unable to establish SSL connection\\.");
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -46,20 +72,34 @@ public class WgetLogEntry {
         try {
             String line;
             while ((line = br.readLine()) != null) {
-                Matcher starter = PATTERN_STARTER.matcher(line);
-                if (starter.matches()) {
-                    dateTime = LocalDateTime.parse(starter.group(1),
+                Matcher starterMatcher = PATTERN_STARTER.matcher(line);
+                if (starterMatcher.matches()) {
+                    dateTime = LocalDateTime.parse(starterMatcher.group(1),
                             dateTimeFormatter);
                     try {
-                        url = new URI(starter.group(2)).toURL();
+                        url = new URI(starterMatcher.group(3)).toURL();
                     } catch (URISyntaxException e) {
-                        logger.error("invalid URL string:{}", starter.group(2), e);
+                        logger.error("invalid URL string:{}", starterMatcher.group(3), e);
                     }
                 }
-                Matcher response = PATTERN_RESPONSE_STATUS.matcher(line);
-                if (response.matches()) {
-                    responseStatus = Integer.valueOf(response.group(1));
-                    statusMessage = response.group(2);
+                //
+                Matcher responseMatcher = PATTERN_RESPONSE_STATUS.matcher(line);
+                if (responseMatcher.matches()) {
+                    responseStatus = Integer.valueOf(responseMatcher.group(1));
+                    statusMessage = responseMatcher.group(2);
+                }
+                //
+                Matcher noDataReceivedMatcher = PATTERN_NO_DATA_RECEIVED.matcher(line);
+                if (noDataReceivedMatcher.matches()) {
+                    responseStatus = 0;
+                    statusMessage = "No data received";
+                }
+                //
+                Matcher unableToEstablishSslConnection =
+                        PATTERN_UNABLE_TO_ESTABLISH_SSL_CONNECTION.matcher(line);
+                if (unableToEstablishSslConnection.matches()) {
+                    responseStatus = -1;
+                    statusMessage = "Unable to establish SSL connection";
                 }
             }
         } catch (IOException e) {

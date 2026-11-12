@@ -1,9 +1,13 @@
 plugins {
-    id("com.kazurayam.wget-log-digest-plugin") version "0.1.13"
+    id("com.kazurayam.wget-log-digest-plugin") version "0.1.14"
+}
+
+repositories {
+    mavenLocal()
 }
 
 tasks.register('digest', com.kazurayam.wgetlog.DigesterTask) {
-    wgetLogFile = file("../plugin/src/test/fixtures/wget.log")
+    wgetLogFile = file("../lib/src/test/fixtures/issue15-wget.log")
     logEncoding = "Shift_JIS"
     outputFile = file("./build/tmp/out/straight.txt")
 }

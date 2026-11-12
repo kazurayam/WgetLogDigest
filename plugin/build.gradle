@@ -26,7 +26,7 @@ dependencies {
     // libプロジェクトが開発したcom.kazurayam.wgetlog.Digestクラスを
     // pluginプロジェクトのcom.kazurayam.wgetlog.DigestPluginクラスが
     // 参照できるようにする
-    implementation("com.kazurayam:wget-log-digest:0.1.8")
+    implementation("com.kazurayam:wget-log-digest:${version}")
     //implementation project(":lib")
 
     // Use the awesome Spock testing and specification framework¶
@@ -44,6 +44,14 @@ tasks.register('functionalTest', Test) {
     testClassesDirs = sourceSets.functionalTest.output.classesDirs
     classpath = sourceSets.functionalTest.runtimeClasspath
     useJUnitPlatform()
+    systemProperty(
+            'functionalTestOutputDir',
+            layout.buildDirectory.dir('functionalTest').get().asFile.absolutePath
+    )
+    systemProperty(
+            'functionalTestFixturesDir',
+            layout.projectDirectory.dir('../lib/src/test/fixtures').asFile.absolutePath
+    )
 }
 
 gradlePlugin.testSourceSets.add(sourceSets.functionalTest)
